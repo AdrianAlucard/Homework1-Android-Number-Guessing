@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
             counter--
             num_trials.text = counter.toString()
         } else {
-            user_hint.text = "Congrats!"
+            user_hint.text = "Congrats! $userGuess is correct!"
             reset_button.visibility = View.VISIBLE
         }
 
