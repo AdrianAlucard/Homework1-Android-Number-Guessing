@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         setOnActionListener()
     }
 
-    fun setOnActionListener() {
+    private fun setOnActionListener() {
         user_guess.setOnKeyListener { view, actionId, event ->
             if (event.action == KeyEvent.ACTION_DOWN &&
                 actionId == KeyEvent.KEYCODE_ENTER) {
@@ -36,23 +36,31 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun checkUserInput() {
+    private fun checkUserInput() {
+        if(isWinner()) {
+            reset_button.visibility = View.VISIBLE
+            clearAndUnfocusUserGuess()
+        } else {
+            counter--
+            num_trials.text = counter.toString()
+            checkIfEndGame()
+        }
+    }
+
+    private fun isWinner(): Boolean {
         val userGuess = user_guess.text.toString().toInt()
+        var isWin = false
         println("User Guess $userGuess")
 
         if(userGuess > randomNumber) {
             user_hint.text = "Hint: Down!"
-            counter--
-            num_trials.text = counter.toString()
         } else if(userGuess < randomNumber) {
             user_hint.text = "Hint: Up!"
-            counter--
-            num_trials.text = counter.toString()
         } else {
             user_hint.text = "Congrats! $userGuess is correct!"
-            reset_button.visibility = View.VISIBLE
+            isWin = true
         }
-        checkIfEndGame()
+        return isWin
     }
 
     fun resetGame(v: View) {
@@ -66,16 +74,20 @@ class MainActivity : AppCompatActivity() {
         user_guess.isFocusable = true
     }
 
-    fun checkIfEndGame() {
-        if(counter == 0 ) {
+    private fun checkIfEndGame() {
+        if(counter == 0) {
             reset_button.visibility = View.VISIBLE
             user_hint.text = "You Lost :( Correct answer is $randomNumber!"
-            user_guess.editableText.clear()
-            user_guess.isFocusable = false
+            clearAndUnfocusUserGuess()
         }
     }
 
-    fun pickRandomNumber(): Int {
+    private fun clearAndUnfocusUserGuess() {
+        user_guess.editableText.clear()
+        user_guess.isFocusable = false
+    }
+
+    private fun pickRandomNumber(): Int {
         return Random().nextInt(100)
     }
 }
