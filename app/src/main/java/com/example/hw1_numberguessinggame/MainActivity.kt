@@ -52,11 +52,7 @@ class MainActivity : AppCompatActivity() {
             user_hint.text = "Congrats! $userGuess is correct!"
             reset_button.visibility = View.VISIBLE
         }
-
-        if(counter == 0 ) {
-            reset_button.visibility = View.VISIBLE
-            user_hint.text = "You Lost :( Try harder next time!"
-        }
+        checkIfEndGame()
     }
 
     fun resetGame(v: View) {
@@ -67,6 +63,16 @@ class MainActivity : AppCompatActivity() {
         println("Random Number $randomNumber")
         user_hint.text = ""
         reset_button.visibility = View.INVISIBLE
+        user_guess.isFocusable = true
+    }
+
+    fun checkIfEndGame() {
+        if(counter == 0 ) {
+            reset_button.visibility = View.VISIBLE
+            user_hint.text = "You Lost :( Correct answer is $randomNumber!"
+            user_guess.editableText.clear()
+            user_guess.isFocusable = false
+        }
     }
 
     fun pickRandomNumber(): Int {
